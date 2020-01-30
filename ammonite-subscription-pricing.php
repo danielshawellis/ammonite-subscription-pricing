@@ -15,36 +15,44 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /*
-  Edit Prices for Single Purchases VS Subscriptions
+  Add Plugin Container Class
 */
-add_action( 'woocommerce_before_calculate_totals', 'add_custom_price', 20, 1);
-function add_custom_price( $cart ) {
+if ( !class_exists( 'Ammonite_Subscriptions_Custom_Pricing' ) ) {
+  class Ammonite_Subscriptions_Custom_Pricing {
 
-    // This is necessary for WC 3.0+
-    if ( is_admin() && ! defined( 'DOING_AJAX' ) )
-        return;
+    public static function add_custom_dynamic_pricing( $cart ) {
 
-    // Avoiding hook repetition (when using price calculations for example)
-    if ( did_action( 'woocommerce_before_calculate_totals' ) >= 2 )
-        return;
+      // This is necessary for WC 3.0+
+      if ( is_admin() && ! defined( 'DOING_AJAX' ) )
+          return;
 
-    // Loop through cart items
-    foreach ( $cart->get_cart() as $item ) {
+      // Avoiding hook repetition (when using price calculations for example)
+      if ( did_action( 'woocommerce_before_calculate_totals' ) >= 2 )
+          return;
 
-      // Check if a subscription option is selected for the item
-      if ( $item['wcsatt_data']['active_subscription_scheme'] != false ) {
+      // Loop through cart items
+      foreach ( $cart->get_cart() as $item ) {
 
-        // If a subscription option is selected, apply quantity-based discounts
-        if ( $item['quantity'] == 1 ) {
-          $item['data']->set_price( 45 );
-        } elseif ( $item['quantity'] == 2 ) {
-          $item['data']->set_price( 42.5 );
-        } elseif ( $item['quantity'] == 3 ) {
-          $item['data']->set_price( 41.66 );
-        } elseif ( $item['quantity'] >= 4 ) {
-          $item['data']->set_price( 41.25 );
+        // Check if a subscription option is selected for the item
+        if ( $item['wcsatt_data']['active_subscription_scheme'] != false ) {
+          // If a subscription option is selected, apply quantity-based discounts
+          if ( $item['quantity'] == 1 ) {
+            $item['data']->set_price( 45 );
+          } elseif ( $item['quantity'] == 2 ) {
+            $item['data']->set_price( 42.5 );
+          } elseif ( $item['quantity'] == 3 ) {
+            $item['data']->set_price( 41.66 );
+          } elseif ( $item['quantity'] >= 4 ) {
+            $item['data']->set_price( 41.25 );
+          }
         }
 
       }
+
     }
+
+  }
+
+  // The following functions will run on plugin load
+  add_action( 'woocommerce_before_calculate_totals', array( 'Ammonite_Subscriptions_Custom_Pricing', 'add_custom_dynamic_pricing' ), 20, 1);
 }
