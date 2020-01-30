@@ -7,6 +7,13 @@
  * Author URI:        https://danielellisdevelopment.com/
  */
 
+/**
+ * DEVELOPER NOTES:
+ * This plugin is intended to be used alongside WooCommerce, WooCommerce Subscriptions, and All Products for WooCommerce Subscriptions
+ * It allows subscription options from the All Products for WooCommerce Subscriptions plugin to be priced dynamically based on quantities
+ * It also sets pricing rules independently for one-time purchase options
+ */
+
 /*
   Basic Security
 */
