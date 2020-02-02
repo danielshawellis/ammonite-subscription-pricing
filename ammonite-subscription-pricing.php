@@ -48,7 +48,7 @@ if ( !class_exists( 'Ammonite_Subscriptions_Custom_Pricing' ) ) {
           } elseif ( $item['quantity'] == 2 ) {
             $item['data']->set_price( 42.5 );
           } elseif ( $item['quantity'] == 3 ) {
-            $item['data']->set_price( 41.66 );
+            $item['data']->set_price( 41.6666 );
           } elseif ( $item['quantity'] >= 4 ) {
             $item['data']->set_price( 41.25 );
           }
